@@ -3,7 +3,9 @@ An example of cuda ray tracing in pure python syntax. It reproduces the result o
 
 The original cpp code takes around 4 hours to complete, while this python CUDA implementation takes less than 1 minute.
 
-NOTE: The code is not guaranteed to be fully optimized, but I intend to provide some insights on efficient python ray tracing implementation.
+**NOTE**: The code is not guaranteed to be fully optimized, but I intend to provide some insights on efficient python ray tracing implementation.
+
+**ATTENTION**: Currently it consumes ~28G of memory, so be aware if your PC doesn't have enough memory. You can decrease `SAMPLES_PER_RAY` to reduce memory consumption.
 
 ![test](test.png)
 
