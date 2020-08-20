@@ -5,7 +5,7 @@ The original cpp code takes around 4 hours to complete, while this python CUDA i
 
 **NOTE**: The code is not guaranteed to be fully optimized, but I intend to provide some insights on efficient python ray tracing implementation.
 
-**ATTENTION**: Currently it consumes ~28G of memory, so be aware if your PC doesn't have enough memory. You can decrease `SAMPLES_PER_RAY` to reduce memory consumption.
+**ATTENTION**: Currently it consumes ~16G of memory, so be aware if your PC doesn't have enough memory. You can decrease `SAMPLES_PER_RAY` to reduce memory consumption.
 
 ![test](test.png)
 
