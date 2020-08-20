@@ -1,7 +1,5 @@
 # python-ray-tracing-with-cuda-example
-An example of cuda ray tracing in pure python syntax.
-
-Reproduces the result of [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
+An example of cuda ray tracing in pure python syntax. It reproduces the result of [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
 
 The original cpp code takes around 4 hours to complete, while this python CUDA implementation takes less than 1 minute.
 
