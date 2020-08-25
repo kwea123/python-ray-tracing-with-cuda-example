@@ -7,7 +7,8 @@ def random_in_unit_disk(N):
     x = r * np.sin(phi)
     y = r * np.cos(phi)
     z = np.zeros_like(x)
-    return np.stack((x, y, z), 1).astype(np.float32)
+    res = np.stack((x, y, z), 1)
+    return np.ascontiguousarray(res, dtype=np.float32)
 
 
 # def random_in_unit_sphere(N):
@@ -29,4 +30,5 @@ def random_unit_vector(N):
     a = 2*np.pi*np.random.random(N)
     z = np.random.random(N)*2-1
     r = (1-z**2)**0.5
-    return np.stack((r*np.cos(a), r*np.sin(a), z), 1).astype(np.float32)
+    res = np.stack((r*np.cos(a), r*np.sin(a), z), 1)
+    return np.ascontiguousarray(res, dtype=np.float32)
