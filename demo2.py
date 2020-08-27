@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import time
 
 # define constants
-SAMPLES_PER_RAY = 100
+SAMPLES_PER_RAY = 20
 MAX_RAY_BOUNCE = 20
 chunk = int(2**20)
 GAMMA = 2.2
@@ -21,19 +21,19 @@ if __name__ == '__main__':
     mesh.vertices /= 1000
     scene = []
     scene += [mesh]
-    # scene += [Sphere(np.float32([0, -1000.07, 0]), 1000, 
-    #                  albedo=np.float32([0.5, 0.5, 0.5]),
-    #                  material=Material.METAL,
-    #                  roughness=0.1)]
+    scene += [Sphere(np.float32([0, -1000.07, 0]), 1000, 
+                     albedo=np.float32([0.5, 0.5, 0.5]),
+                     material=Material.METAL,
+                     roughness=0.1)]
 
     # scene += [Sphere(np.float32([0, 0.25, 3]), 0.25, 
     #                  material=Material.DIELECTRICS,
     #                  ref_idx=1.5)]
 
-    scene += [Sphere(np.float32([-3, 1.2, -4]), 1.2,
-                     albedo=np.float32([107, 62, 203])/255.0, 
-                     material=Material.METAL,
-                     roughness=0.)]
+    # scene += [Sphere(np.float32([-3, 1.2, -4]), 1.2,
+    #                  albedo=np.float32([107, 62, 203])/255.0, 
+    #                  material=Material.METAL,
+    #                  roughness=0.)]
 
     # scene += [Sphere(np.float32([4, 1, 0]), 1.0,
     #                  albedo=np.float32([0.7, 0.6, 0.5]), 
@@ -112,37 +112,31 @@ if __name__ == '__main__':
     # construct lights (only 1 allowed currently, TODO: support multi light shadow)
     lights = np.float32([
                          [-6, 20, 10, 1, 1, 1],
-                        #  [10, 20, 3, 1, 1, 1]
+                        #  [8, 10, 10, 1, 1, 1]
                         ])
     lights = lights.reshape(-1, 6)
     lights[:, :3] = normalize(lights[:, :3])
     L = len(lights)
 
     # construct bakcground
-    bg = Skybox(['backgrounds/daiba/py.png', 
-                 'backgrounds/daiba/nx.png', 
-                 'backgrounds/daiba/pz.png', 
-                 'backgrounds/daiba/px.png', 
-                 'backgrounds/daiba/nz.png', 
-                 'backgrounds/daiba/ny.png'])
-    # bg = Skybox(['backgrounds/space1/top.png', 
-    #              'backgrounds/space1/left.png', 
-    #              'backgrounds/space1/back.png', 
-    #              'backgrounds/space1/right.png', 
-    #              'backgrounds/space1/front.png', 
-    #              'backgrounds/space1/bottom.png'])
+    bg = Skybox(['backgrounds/chiba/py.png', 
+                 'backgrounds/chiba/nx.png', 
+                 'backgrounds/chiba/pz.png', 
+                 'backgrounds/chiba/px.png', 
+                 'backgrounds/chiba/nz.png', 
+                 'backgrounds/chiba/ny.png'])
     
     # create random vectors
     rand_vec3 = random_unit_vector(int(1e6))
 
     # define camera parameters
-    img_wh, fov = (480, 270), np.pi/6
+    img_wh, fov = (480*2, 270*2), np.pi/6
     lookfrom = np.float32([-6, 3, 15])
     lookat = np.float32([0, 0.5, 0])
     vup = np.float32([0, 1, 0])
 
     for image_idx in range(1):
-        # rotation = R.from_rotvec(-vup*np.pi/18)
+        # rotation = R.from_rotvec(-vup*np.pi/18*14)
         # lookfrom = rotation.apply(lookfrom)
         focus_dist = 15
         aperture = 0.2
@@ -223,7 +217,7 @@ if __name__ == '__main__':
                 break
 
             rays_o = np.ascontiguousarray(hit_record[:, 2:5])
-            rays_in_shadow = np.zeros(N)
+            rays_in_shadow = np.zeros(N, dtype=np.float32)
             for l in range(L):
                 hit_record_ = HitRecord.get(N, 1)
                 rays_d = np.ascontiguousarray(np.tile(lights[l], (N, 1)))

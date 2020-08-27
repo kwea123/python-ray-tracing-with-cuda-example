@@ -58,7 +58,7 @@ def ray_sphere_intersect(rays_o, rays_d, min_t, t_only,
                 t = (-half_b-disc**0.5) / a
                 if t>min_t and t<hit_record[i, 0]:
                     hit_record[i, 0] = t
-                    if t_only > 0:
+                    if t_only>0:
                         continue
                     hit_record[i, 1] = obj_idx
                     hit_record[i, 2] = o[0]+t*d[0]
@@ -269,7 +269,7 @@ def ray_triangle_intersect(rays_o, rays_d, min_t, t_only,
             q1 = d[2]*e2[0]-d[0]*e2[2]
             q2 = d[0]*e2[1]-d[1]*e2[0]
             a = e1[0]*q0+e1[1]*q1+e1[2]*q2
-            if abs(a)<1e-5: # ray almost parallel to the triangle
+            if abs(a)<1e-10: # ray almost parallel to the triangle
                 continue
             f = a**(-1) # MUCH FASTER than 1.0/a !!!
             s0 = o[0]-p0[0]
@@ -327,11 +327,10 @@ def ray_triangle_intersect(rays_o, rays_d, min_t, t_only,
             v2 = -d[2]/d_norm
 
             # Blinn-Phon shading
-            amb = 0.03
-            ka, kd, ks = 1, 1, 5
-            hit_record[i, 12] = ka*amb
-            hit_record[i, 13] = ka*amb
-            hit_record[i, 14] = ka*amb
+            ka, kd, ks = 0.1, 1, 3
+            hit_record[i, 12] = ka*tri_col[j, 0]
+            hit_record[i, 13] = ka*tri_col[j, 1]
+            hit_record[i, 14] = ka*tri_col[j, 2]
             for l in range(L):
                 light = lights[l]
                 ndotl = max(0, n0*light[0]+n1*light[1]+n2*light[2])
@@ -344,9 +343,9 @@ def ray_triangle_intersect(rays_o, rays_d, min_t, t_only,
                 h2 = h2_/h_norm
                 spec = 32 # exponent
                 ndoth = max(0, n0*h0+n1*h1+n2*h2)**spec
-                hit_record[i, 12] += kd*ndotl*tri_col[j, 0]+ks*ndoth*light[3]
-                hit_record[i, 13] += kd*ndotl*tri_col[j, 1]+ks*ndoth*light[4]
-                hit_record[i, 14] += kd*ndotl*tri_col[j, 2]+ks*ndoth*light[5]
+                hit_record[i, 12] += (kd*ndotl*tri_col[j, 0]+ks*ndoth)*light[3]
+                hit_record[i, 13] += (kd*ndotl*tri_col[j, 1]+ks*ndoth)*light[4]
+                hit_record[i, 14] += (kd*ndotl*tri_col[j, 2]+ks*ndoth)*light[5]
 
             # # PBR
             # metallic = 1.0
